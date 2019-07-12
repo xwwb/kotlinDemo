@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:loadingview="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
+        <ProgressBar
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_horizontal"
+            android:indeterminateBehavior="repeat"
+            android:indeterminateTint="#d38fdb"
+            android:visibility="gone" />
+
+        <com.pitt.loadingview.library.LoadingView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            loadingview:color="@color/title_layout"
+
+            loadingview:progress_style="material"
+            loadingview:ring_radius="15dp"
+            loadingview:ring_style="round"
+            loadingview:ring_width="3dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="加载中..."
+            android:textColor="#000000"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

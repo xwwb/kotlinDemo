@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">KotlinDemo</string>
+    <string name="network_error">网络异常</string>
+    <!-- 共享过度动画 -->
+    <string name="transition_photos">transition_animation_news_photos</string>
+    <string name="share">分享</string>
+    <string name="save">保存</string>
+    <string name="set_wallpaper">设为壁纸</string>
+    <string name="refresh">刷新</string>
+    <string name="copy_url">复制地址</string>
+    <string name="browser_open">浏览器打开</string>
+    <string name="sharedView">sharedView</string>
+    <string name="share_contents">来自「Gank」的分享：%1$s %2$s</string>
+    <string name="android">Android</string>
+    <string name="copy_success">复制成功</string>
+    <string name="home">Android</string>
+    <string name="belle">Picture</string>
+    <string name="hot">Hot</string>
+    <string name="image">image</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
