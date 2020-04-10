@@ -70,6 +70,10 @@ abstract class BaseActivity : AppCompatActivity() {
 
 
 
+
+
+
+
     private fun getShareContents(url: String?): String {
         return getString(R.string.share_contents, "", url)
     }
