@@ -65,7 +65,6 @@ abstract class BaseActivity : AppCompatActivity() {
         intent.putExtra(Intent.EXTRA_TEXT, getShareContents(url))
         startActivity(Intent.createChooser(intent, title))
     }
-
     private fun getShareContents(url: String?): String {
         return getString(R.string.share_contents, "", url)
     }
