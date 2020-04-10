@@ -1,25 +1,101 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-
+//def cmd = 'git rev-list HEAD --first-parent --count'
+//def gitVersion = cmd.execute().text.trim().toInteger()
+//def cmd2 = 'git describe --tags'
+//def versionname = cmd2.execute().text.trim()
 android {
+    signingConfigs {
+        singnedconfig {
+            storeFile file('D:\\AndroidStudio\\kotlinDemo\\app\\src\\kotlin.jks')
+            keyAlias "android"
+            keyPassword "123456"
+            storePassword "123456"
+        }
+    }
+
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.skysoft.kotlindemo"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        versionCode gitVersionCode()
+        versionName gitVersionTag()
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
-        release {
+        debug {
+            // 显示Log
+            buildConfigField "boolean", "LOG_DEBUG", "true"
+            versionNameSuffix "-debug"
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            zipAlignEnabled false
+            shrinkResources false
+            signingConfig signingConfigs.singnedconfig
+            jniDebuggable true
         }
+        release {
+            // 不显示Log
+            buildConfigField "boolean", "LOG_DEBUG", "false"
+            //混淆
+            minifyEnabled false
+            //Zipalign优化
+            zipAlignEnabled false
+            // 移除无用的resource文件
+            shrinkResources false
+            //前一部分代表系统默认的android程序的混淆文件，该文件已经包含了基本的混淆声明，后一个文件是自己的定义混淆文件
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.singnedconfig
+        }
+    }
+    //打包后应用名称
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def outputFile = output.outputFile
+            def fileName
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+//                fileName = "Settings.${defaultConfig.versionName}.${getTime()}.apk"
+                fileName = "ASettings.apk"
+                outputFileName = fileName
+            }
+        }
+    }
+//    applicationVariants.all { variant ->
+//        variant.mergedFlavor.versionCode = gitVersionCode()
+//        variant.mergedFlavor.versionName = gitVersionTag()
+//        variant.outputs.each { output ->
+//            output.outputFile = new File(
+//                    output.outputFile.parent + "/${variant.buildType.name}",
+//                    "HelloWord-${variant.buildType.name}-v${variant.versionName}}.apk".toLowerCase())
+//        }
+//    }
+}
+
+static def gitVersionCode() {
+    def cmd = 'git rev-list HEAD --first-parent --count'
+    try {
+        cmd.execute().text.trim().toInteger()
+    } catch (Exception e) {
+        return 0
     }
 }
 
+static def gitVersionTag() {
+    def cmd = 'git describe --tags'
+    def version = cmd.execute().text.trim()
+
+    def pattern = "-(\\d+)-g"
+    def matcher = version =~ pattern
+
+    if (matcher) {
+        version = version.substring(0, matcher.start()) + "." + matcher[0][1]
+    } else {
+        version = version + ".0"
+    }
+
+    return version
+}
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:28.0.0'
