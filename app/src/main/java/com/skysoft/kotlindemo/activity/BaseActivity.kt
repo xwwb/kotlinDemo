@@ -34,13 +34,6 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
 
-
-
-
-
-
-
-
     protected abstract fun getLayoutId(): Int
     protected abstract fun initView()
 
