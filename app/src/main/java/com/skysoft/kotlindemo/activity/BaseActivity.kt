@@ -18,6 +18,7 @@ abstract class BaseActivity : AppCompatActivity() {
     var immersionBar: ImmersionBar? = null
     private var toast: Toast? = null
     var context: Context? = null
+    //重写方法
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(getLayoutId())
