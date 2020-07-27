@@ -10,13 +10,14 @@ import retrofit2.http.Query
 import retrofit2.http.Url
 
 interface ApiService {
-//
+    //
     @GET("data/{type}/{count}/{page}")
     fun getBelleData(@Path("type") type: String, @Path("count") count: Int, @Path("page") page: Int): Observable<BelleBean>
 
     @GET
-   fun downloadPicFromNet(@Url fileUrl: String): Observable<ResponseBody>
-//
+    fun downloadPicFromNet(@Url fileUrl: String): Observable<ResponseBody>
+
+    //
     @GET("tree/json")
     fun getHotData(): Observable<HotBean>
 
@@ -24,7 +25,8 @@ interface ApiService {
     fun getBanner(): Observable<WanAndroidBena>
 
     @GET("article/list/{page}/json")
-    fun getHomeData(@Path("page")page: Int):Observable<HomeBean>
+    fun getHomeData(@Path("page") page: Int): Observable<HomeBean>
+
     //    Observable<AndroidBannerBean> getAndroidBanner();
     //    @GET("search/query/{type}/category/{types}/count/{count}/page/{page}")
     //    Observable<GankModel> getAboutAndroid(@Path("type") String type, @Path("types") String types, @Path("count") int count, @Path("page") int page);
@@ -34,7 +36,13 @@ interface ApiService {
     //    Observable<RegisterBean> login(@Query("username") String username, @Query("password") String password);
     //    @GET("satinApi?")
     //    Observable<FirstVideoBean> getFirstVideo(@Query("type") String type, @Query("page") String page);
-    @GET("channel/listjson?")
+   // @GET("channel/listjson?")
     //{pn}&{rn}&{tag1}&{tag2}&{ftags}&{ie}
-    fun getPicture(@Query("pn")pn :Int, @Query("rn")rn :Int, @Query("tag1")tag1 :String, @Query("tag2")tag2 :String, @Query("ftags")ftags :String, @Query("ie")ie :String):Observable<PictureBean>
+//    fun getPicture(@Query("pn") pn: Int, @Query("rn") rn: Int, @Query("tag1") tag1: String, @Query("tag2") tag2: String, @Query("ftags") ftags: String, @Query("ie") ie: String): Observable<PictureBean>
+
+    @GET("v2/data/category/Girl/type/Girl/page/{page}/count/{count}")
+    fun getPicture(@Path("page") count: Int, @Path("count") page: Int): Observable<GankModel>
+//   http://baobab.kaiyanapp.com/api/v5/index/tab/allRec?page=1&isTag=true&adIndex=5
+    @GET("allRec?page=1&isTag=true&adIndex=5")
+    fun getOther(@Query("page") page: Int, @Query("isTag")isTag:Boolean, @Query("adIndex")adIndex:Int): Observable<OtherBean>
 }

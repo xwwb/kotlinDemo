@@ -204,13 +204,13 @@ object RetrofitUtils {
                 .build()
     }
 
-    fun getFirstVideoInstance(context: Context): Retrofit {
+    fun getOtherInstance(context: Context): Retrofit {
         mContext = context
         val builder = OkHttpClient.Builder()
         //  builder.addInterceptor(addQueryParameterInterceptor());
         //   builder.addInterceptor(addHeaderInterceptor());
         // 设置缓存
-        val cacheFile = File(mContext!!.externalCacheDir, "FirstVideo")
+        val cacheFile = File(mContext!!.externalCacheDir, "Other")
         val cache = Cache(cacheFile, (1024 * 1024 * 50).toLong())
         // builder.cache(cache).addInterceptor(addCacheInterceptor());
 
@@ -224,7 +224,7 @@ object RetrofitUtils {
         val client = builder.build()
 
         return Retrofit.Builder()
-                .baseUrl(ConstantApi.FirstVideo)
+                .baseUrl(ConstantApi.OtherUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(client)

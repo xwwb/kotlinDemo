@@ -14,4 +14,8 @@
         android:id="@+id/navigation_hot"
         android:icon="@drawable/ic_action_hot"
         android:title="@string/hot" />
+    <item
+        android:id="@+id/navigation_other"
+        android:icon="@drawable/ic_action_hot"
+        android:title="@string/other" />
 </menu>

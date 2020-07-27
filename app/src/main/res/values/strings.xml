@@ -14,9 +14,11 @@
     <string name="android">Android</string>
     <string name="copy_success">复制成功</string>
     <string name="home">Android</string>
-    <string name="belle">Picture</string>
+    <string name="belle">妹纸</string>
     <string name="hot">Hot</string>
     <string name="image">image</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="other">other</string>
+    <string name="girl">妹纸</string>
 </resources>

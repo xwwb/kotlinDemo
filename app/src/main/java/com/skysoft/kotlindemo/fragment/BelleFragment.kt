@@ -8,6 +8,7 @@ import android.os.Build
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.app.Fragment
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.StaggeredGridLayoutManager
 import android.util.Log
@@ -21,10 +22,7 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener
 import com.skysoft.kotlindemo.R
 import com.skysoft.kotlindemo.activity.PictureActivity
 import com.skysoft.kotlindemo.adapter.BelleAdapter
-import com.skysoft.kotlindemo.bean.BelleBean
-import com.skysoft.kotlindemo.bean.PictureBean
-import com.skysoft.kotlindemo.bean.PictureBeanData
-import com.skysoft.kotlindemo.bean.Result
+import com.skysoft.kotlindemo.bean.*
 import com.skysoft.kotlindemo.retrofit.ApiService
 import com.skysoft.kotlindemo.retrofit.ConstantApi
 import com.skysoft.kotlindemo.retrofit.RetrofitUtils
@@ -41,7 +39,7 @@ class BelleFragment : BaseFragment(), OnRefreshListener, OnLoadMoreListener, Loa
 
 
     var belleAdapter: BelleAdapter? = null
-    var belleList: MutableList<PictureBeanData>? = ArrayList()
+    var belleList: MutableList<GankModelData>? = ArrayList()
     val TAG: String = "====BaseFragment"
 
 
@@ -51,7 +49,7 @@ class BelleFragment : BaseFragment(), OnRefreshListener, OnLoadMoreListener, Loa
 
     override fun init() {
         Log.i("====", "====init2")
-        recyclerView!!.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        recyclerView!!.layoutManager = LinearLayoutManager(activity)
         belleAdapter = BelleAdapter(this.activity!!, R.layout.belle_adapter_item, belleList)
         recyclerView!!.adapter = belleAdapter
 
@@ -64,18 +62,17 @@ class BelleFragment : BaseFragment(), OnRefreshListener, OnLoadMoreListener, Loa
     }
 
     private fun getBelleData(page: Int?, size: Int?) {
-        RetrofitUtils.getInstance(this.activity!!, ConstantApi.BaiDuPictureUrl)!!.create<ApiService>(ApiService::class.java).getPicture(page!!,size!!,"摄影","全部","高清","utf8")
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<PictureBean> {
+        RetrofitUtils.getInstance(activity!!, ConstantApi.GankUrl)!!.create(ApiService::class.java).getPicture( page!!, size!!).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : Observer<GankModel> {
                     override fun onComplete() {
+
                     }
 
                     override fun onSubscribe(d: Disposable) {
 
                     }
 
-                    override fun onNext(pictureBean: PictureBean) {
+                    override fun onNext(gankModel: GankModel) {
                         Log.i(TAG, "====onNext")
                         loadDataLayout!!.status = LoadDataLayout.SUCCESS
                         if (isFresh) {
@@ -85,17 +82,49 @@ class BelleFragment : BaseFragment(), OnRefreshListener, OnLoadMoreListener, Loa
                         if (isLoadMore) {
                             smartRefreshLayout!!.finishLoadMore(1000)
                         }
-                        val data = pictureBean.data
+                        val data = gankModel.data
                         belleList!!.addAll(data)
-                        Log.i("======",""+belleList!!.size)
+                        Log.i("======", "" + belleList!!.size)
                         belleAdapter?.notifyDataSetChanged()
                     }
 
                     override fun onError(e: Throwable) {
-                        Log.i("====", "====onError$e")
                         loadDataLayout!!.status = LoadDataLayout.ERROR
                     }
-                })
+                }
+                )
+//        RetrofitUtils.getInstance(this.activity!!, ConstantApi.BaiDuPictureUrl)!!.create<ApiService>(ApiService::class.java).getPicture(page!!,size!!,"摄影","全部","高清","utf8")
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(object : Observer<PictureBean> {
+//                    override fun onComplete() {
+//                    }
+//
+//                    override fun onSubscribe(d: Disposable) {
+//
+//                    }
+//
+//                    override fun onNext(pictureBean: PictureBean) {
+//                        Log.i(TAG, "====onNext")
+//                        loadDataLayout!!.status = LoadDataLayout.SUCCESS
+//                        if (isFresh) {
+//                            belleList!!.clear()
+//                            smartRefreshLayout!!.finishRefresh(100)
+//                        }
+//                        if (isLoadMore) {
+//                            smartRefreshLayout!!.finishLoadMore(1000)
+//                        }
+//                        val data = pictureBean.data
+//                        belleList!!.addAll(data)
+//                        Log.i("======",""+belleList!!.size)
+//                        belleAdapter?.notifyDataSetChanged()
+//                    }
+//
+//                    override fun onError(e: Throwable) {
+//                        Log.i("====", "====onError$e")
+//                        loadDataLayout!!.status = LoadDataLayout.ERROR
+//                    }
+//                })
     }
 
 
@@ -120,22 +149,24 @@ class BelleFragment : BaseFragment(), OnRefreshListener, OnLoadMoreListener, Loa
         isFresh = false
         getBelleData(page, size)
     }
+
     override fun onReload(v: View?, status: Int) {
         page = 1
         loadDataLayout!!.status = LoadDataLayout.LOADING
         loadDataLayout!!.postDelayed({ getBelleData(page, size) }, 500)
     }
+
     override fun onItemClick(adapter: BaseQuickAdapter<*, *>?, view: View?, position: Int) {
-        val download_url = belleList!![position].download_url
-        val id = belleList!![position].id
-        val share_url = belleList!![position].share_url
-        val image_url = belleList!![position].image_url
+        val download_url = belleList!![position].url
+        val id = belleList!![position]._id
+        val share_url = belleList!![position].url
+        val image_url = belleList!![position].url
         val intent = Intent(activity, PictureActivity::class.java)
         intent.putExtra("id", id)
         intent.putExtra("download_url", download_url)
         intent.putExtra("share_url", share_url)
         intent.putExtra("image_url", image_url)
-        startIntent(view!!,intent,activity!!)
+        startIntent(view!!, intent, activity!!)
     }
 
     private fun startIntent(view: View, intent: Intent, activity: Activity) {

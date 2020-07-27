@@ -7,16 +7,17 @@ import com.skysoft.kotlindemo.R
 import com.skysoft.kotlindemo.fragment.BelleFragment
 import com.skysoft.kotlindemo.fragment.HomeFragment
 import com.skysoft.kotlindemo.fragment.HotFragment
+import com.skysoft.kotlindemo.fragment.OtherFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
-    var mFragments: MutableList<Fragment>? = null
-    var hotFragment: HotFragment = HotFragment()
-    var homeFragment: HomeFragment = HomeFragment()
-    var belleFragment: BelleFragment = BelleFragment()
-    var lastIndex: Int = 0
+    private var mFragments: MutableList<Fragment>? = null
+    private var hotFragment: HotFragment = HotFragment()
+    private var homeFragment: HomeFragment = HomeFragment()
+    private var belleFragment: BelleFragment = BelleFragment()
+    private var otherFragment:OtherFragment= OtherFragment()
+    private var lastIndex: Int = 0
     var bottomNavigationView:BottomNavigationView?=null
- //git 提交
 
     override fun initView() {
         setStatusBar(this)
@@ -34,12 +35,13 @@ class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
         mFragments!!.add(homeFragment)
         mFragments!!.add(belleFragment)
         mFragments!!.add(hotFragment)
+        mFragments?.add(otherFragment)
         title_tv.text = resources.getString(R.string.home)
         setFragmentPosition(0)
     }
 
 
-    fun setFragmentPosition(position: Int?) {
+    private fun setFragmentPosition(position: Int?) {
         val beginTransaction = supportFragmentManager.beginTransaction()
         val currentFragment = mFragments!!.get(position!!)
         val lastFragment = mFragments!!.get(lastIndex);
@@ -66,6 +68,10 @@ class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
             R.id.navigation_hot -> {
                  setFragmentPosition(2)
                 title_tv.text = resources.getString(R.string.hot)
+            }
+            R.id.navigation_other-> {
+                setFragmentPosition(3)
+                title_tv.text = resources.getString(R.string.other)
             }
         }
         return true;

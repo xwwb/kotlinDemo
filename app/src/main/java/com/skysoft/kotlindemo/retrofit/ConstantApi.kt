@@ -8,4 +8,5 @@ object ConstantApi {
     var FirstVideo = "https://www.apiopen.top/"
     var BaiDuPictureUrl="http://image.baidu.com/"
     val SET_THE_WALLPAPER = 1
+    var OtherUrl = "http://baobab.kaiyanapp.com/api/v5/index/tab/"
 }
