@@ -20,6 +20,7 @@ abstract class BaseActivity : AppCompatActivity() {
     var context: Context? = null
     //重写方法
     //反反复复
+    //又冲突了
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(getLayoutId())
