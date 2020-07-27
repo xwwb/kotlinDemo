@@ -24,6 +24,8 @@ abstract class BaseActivity : AppCompatActivity() {
     //冲突了吗?
     //垃圾
     //垃圾?
+    //卧槽
+    //SB
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(getLayoutId())
